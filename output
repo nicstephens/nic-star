@@ -1,0 +1,16 @@
+digraph {
+	node [fixedsize=false height=0 margin="0.2,0.2" shape=box width=3]
+	140621562376512 [label="What is the integral of y = (sin(x) + cos(x))^(cos(x^2))"]
+	140621562376512 -> 140621570305216
+	140621562376512 -> 140621614913712
+	140621570305216 [label="Thought: To find the integral of y = (sin(x) + cos(x))^(cos(x^2)), we can try using a substitution. Let's substitute u = sin(x) + cos(x)."]
+	140621570305216 -> 140621263735120
+	140621570305216 -> 140621570156272
+	140621614913712 [label="Thought: To find the integral of the given function, we can use the method of substitution. Let's substitute u = sin(x) + cos(x)."]
+	140621614913712 -> 140621263943488
+	140621614913712 -> 140621264626288
+	140621263735120 [label="Thought: To find the integral of the given function, we can try to simplify it first. Let's start by expanding the exponent using the property (a + b)^c = a^c + c*a^(c-1)*b + ... and simplify the trigonometric terms."]
+	140621570156272 [label="Thought: To find the integral of y = (sin(x) + cos(x))^(cos(x^2)), I can start by substituting u = sin(x) + cos(x). Then, I can rewrite the integral as ∫u^(cos(x^2)) du."]
+	140621263943488 [label="Thought: To find the integral of y = (sin(x) + cos(x))^(cos(x^2)), we can start by applying the chain rule. Let's consider the inner function u = cos(x^2). We need to find the derivative of u with respect to x, so we can determine the integral of the outer function."]
+	140621264626288 [label="Thought: I can use the chain rule to find the derivative of the function inside the exponent, cos(x^2), and then use the power rule to find the integral of the entire expression."]
+}

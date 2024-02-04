@@ -1,0 +1,44 @@
+digraph {
+	node [fixedsize=false height=0 margin="0.2,0.2" shape=box width=3]
+	140214814304944 [label="Create a python script that implements a simple MPL Neural Net to predict stock prices."]
+	140214814304944 -> 140214903576848
+	140214903576848 [label="First, we need to import the necessary libraries for creating the neural network and processing the data."]
+	140214903576848 -> 140214483518576
+	140214483518576 [label="Research and understand the basics of MLP Neural Networks and stock price prediction."]
+	140214483518576 -> 140214484949552
+	140214484949552 [label="Next, we need to load the stock price data and preprocess it before feeding it into the neural network."]
+	140214484949552 -> 140214480591408
+	140214480591408 [label="Next, we need to gather and preprocess the stock price data for training the neural network."]
+	140214480591408 -> 140214481435728
+	140214481435728 [label="Then, we can split the data into training and testing sets to evaluate the performance of the neural network."]
+	140214481435728 -> 140214478921392
+	140214478921392 [label="Next, we need to split the dataset into training and testing sets."]
+	140214478921392 -> 140214480201216
+	140214480201216 [label="Next, we can define the architecture of the MLP Neural Network and compile it."]
+	140214480201216 -> 140214480472400
+	140214480472400 [label="Now, we can create and train the MLP neural network using the training dataset."]
+	140214480472400 -> 140214479474080
+	140214479474080 [label="Next, we can train the MLP Neural Network using the training data."]
+	140214479474080 -> 140214483744336
+	140214483744336 [label="Next, we need to evaluate the performance of the trained neural network using the testing dataset."]
+	140214483744336 -> 140214483294192
+	140214483294192 [label="Next, we can evaluate the performance of the trained MLP Neural Network using the testing dataset."]
+	140214483294192 -> 140214479232352
+	140214479232352 [label="Finally, we can use the trained neural network to make predictions on new, unseen data."]
+	140214479232352 -> 140214814943584
+	140214814943584 [label="Finally, we can use the trained MLP Neural Network to make predictions on new or unseen data."]
+	140214814943584 -> 140214479886656
+	140214479886656 [label="Next, we can implement the python script that creates and trains the MLP neural network."]
+	140214479886656 -> 140214484540768
+	140214484540768 [label="Next, we can implement the python script to create the MLP Neural Network and predict stock prices."]
+	140214484540768 -> 140214481802000
+	140214481802000 [label="Next, we can implement the forward propagation algorithm to make predictions using the trained MLP neural network."]
+	140214481802000 -> 140214478807808
+	140214478807808 [label="Next, we can implement the python script to load and preprocess the stock price data."]
+	140214478807808 -> 140214483744864
+	140214483744864 [label="Next, we need to implement the backpropagation algorithm to update the weights of the neural network during training."]
+	140214483744864 -> 140214480479600
+	140214480479600 [label="Next, we can implement the backpropagation algorithm to update the weights of the neural network during training."]
+	140214480479600 -> 140214480589584
+	140214480589584 [label="Next, we can implement the python script to create the MLP Neural Network and predict stock prices."]
+}
