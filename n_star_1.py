@@ -1,59 +1,38 @@
-
-import random
 from langchain_openai import ChatOpenAI
 import graphviz
-from langchain.prompts import PromptTemplate
 from langchain.chains.openai_functions import create_openai_fn_runnable
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
-from typing import Optional
+from dotenv import load_dotenv
+from pydantic_types import *
+from prompts.reason_and_act import Reactor
+from typing import List, Tuple
 
-class NextStep(BaseModel):
-    """Record some identifying information about a person."""
-
-    next_thought: Optional[str] = Field(None, description="The next logical reasoning step in the chain of thoughts")
-    final_answer: Optional[str] = Field(None, description="The final answer or solutions to the task given.")
-
-
-
-def generate_next_step(question: str, chain_of_thought: str | None) -> NextStep:
-    if chain_of_thought == None:
-        chain_of_thought = 'None so far - please start start off with your first thought.'
-    else:
-        LLM = ChatOpenAI(api_key="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")
-        thought_generation_prompt = ChatPromptTemplate.from_template(
-            """You are an AI that thinks step-by-step before providing answers to thwe questions or tasks you are given. You have been given the following question: {question}. 
-In answering the question, you are thinking step by step to arrive at the answer. These are your thoughts so far:
-{chain_of_thought}
-Now, you have two options: Provide an additional thought step to get you closer to the answer, or conclude the chain of thought by providing the final answer. """
-        )
-        
-        chain = create_openai_fn_runnable([NextStep], LLM, thought_generation_prompt)
-        response = chain.invoke({"question":question, "chain_of_thought": chain_of_thought})
-
-        return response
+load_dotenv()
 
 
 
 
-class Thought():
+class Node():
 
-    def __init__(self, base_question) -> None:
-        self.previous: Thought = None
-        self.next: list(Thought) = None
-        self.current: str = None
-        self.score: int = None
-        self.base_question: str = base_question
+    def __init__(self, task) -> None:
+        self.task: str = task
+        self.thought_action: str = None
+        self.evaluation: Observation = None
+        self.previous: Node = None
+        self.next: list[Node] = []
         pass
 
 
-    def get_previous_thoughts(self):
-        parents = ""
+    def get_previous_thought_actions(self) -> list[ReactorUnit]:
+        parents: List[ReactorUnit] = []
         current = self
         while current.previous is not None:
-            parents = "Thought:" + current.previous.current + "\n" + parents
+            new_thought_action = current.previous.thought_action if current.previous.thought_action else "None"
+            new_evaluation = current.previous.evaluation if current.previous.evaluation else Observation(reflection="No reflection given", correctness_score=10)
+            parents += [ReactorUnit(thought_action=new_thought_action, evaluation=new_evaluation)]
             current = current.previous
-        return parents.strip()
+        return parents
+
 
     def generate_subtree(self, width: int, depth: int) -> None:
         if depth == 0:
@@ -61,16 +40,13 @@ class Thought():
 
         self.next = []
         for _ in range(width):
-            new_thought = Thought(base_question=self.base_question)
-            next_step = generate_next_step(self.base_question, self.get_previous_thoughts())
-            if next_step.next_thought != None :
-                new_thought.current = next_step.next_thought
-                new_thought.previous = self
-                self.next.append(new_thought)
-                new_thought.generate_subtree(width, depth - 1)
-            if next_step.final_answer != None:
-                new_thought.current = next_step.final_answer
-                new_thought.previous = self
+            new_node = Node(task=self.task)
+            reactor_output = Reactor(self.get_previous_thought_actions(), self.task)
+            new_node.thought_action = reactor_output.thought_action
+            new_node.evaluation = reactor_output.evaluation
+            new_node.previous = self
+            self.next.append(new_node)
+            new_node.generate_subtree(width, depth - 1)
 
     
     def bfs(self):
@@ -86,7 +62,7 @@ class Thought():
                 continue
 
             visited.add(current_id)
-            node_label = f"{current_thought.current[:500]}..." if len(current_thought.current) > 500 else current_thought.current
+            node_label = f"Correctness score: {str(current_thought.evaluation.correctness_score)}"
             g.node(str(current_id), label=node_label)
 
             if current_thought.next:
@@ -101,18 +77,10 @@ class Thought():
         pass
 
         
+question = "Your goal is create the most visually appealing portfolio website as possible for me. My name is Nic Stephens and I am an AI developer. You have access to my windows command line. Any work you do must be in the C:\\Users\\nicst\\OneDrive\\Documents\\Freelancing\\N-star\\nic-star\\tmp directory."
 
-    
-
-
-
-
-
-question = "Create a python script that implements a simple MPL Neural Net to predict stock prices."
-
-hello = Thought(base_question=question)
-hello.current = question
-hello.generate_subtree(width=1, depth=20)
+hello = Node(task=question)
+hello.generate_subtree(width=1, depth=10)
 
 hello.bfs()
 
